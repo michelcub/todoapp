@@ -57,10 +57,12 @@ const style = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
+        backgroundColor: 'tomato'
     },
     title: {
         fontSize: 40,
-        marginBottom: 40
+        marginBottom: 40,
+        color: 'white'
     },
     boxInput: {
         alignItems: "center",
@@ -76,7 +78,8 @@ const style = StyleSheet.create({
         height: 40,
         borderRadius: 5,
         marginBottom: 10,
-        width: '100%'
+        width: '100%',
+        padding: 4
     },
     linkContainer: {
         flexDirection: "row",
@@ -84,7 +87,7 @@ const style = StyleSheet.create({
         padding: 5
     },
     links: {
-        color: 'skyblue',
+        color: 'white',
         textDecorationLine: "underline"
     }
 });

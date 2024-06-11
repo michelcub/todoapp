@@ -1,11 +1,25 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { View, Text, StyleSheet, TextInput, Button, Pressable, ScrollView, FlatList } from "react-native"
+import { Search } from "../../Components/Home/searchNotes"
+import useNotesContext from "../../context/notesContext"
+import { AddNote } from "../../Components/Home/createNote"
 
 
 export const Home = ()=> {
     const [search, setSearch] = useState()
     const [noteList, setNoteList] = useState([])
 
+    const note = useNotesContext()
+
+    useEffect(()=>{
+        if(note?.filterd?.length){
+            setNoteList([...note.filtered])
+        }else if(note?.list?.length){
+            setNoteList([...note.list])
+        }
+    },[note.note_list, note.filtered])
+
+    
 
     const handleRenderItems = ({item}) => {
         return(
@@ -16,34 +30,27 @@ export const Home = ()=> {
         )
     }
 
+    
 
     return(
         <View style={styles}>
-            <View style={styles.header}>
-                <TextInput 
-                    placeholder="Buscar nota"
-                    onChange={setSearch}
-                    value={search}
-                />
-            </View>
+            <Search/>
             
             <View style={styles.body}>
 
-                <FlatList 
+                {noteList && noteList?.length?<FlatList 
                   data={noteList}
                   renderItem={handleRenderItems}
                   keyExtractor={item=>item.id}
                 />
+                :(
+                    <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
+                        <Text style={{fontSize: 20}}>No hay notas</Text>
+                    </View>
+                )
+                }
 
-                <View style={styles.createNote}>
-                    <Pressable style={styles.button} 
-                    onPress={
-                        ()=> console.log('hello')
-                    }
-                    >
-                        <Text style={{color:'white', fontSize:40}}>+</Text>
-                    </Pressable>
-                </View>
+                <AddNote/>
             </View>
         </View>
     )
@@ -72,21 +79,5 @@ const styles = StyleSheet.create({
         height: '90%',
         marginTop: 15
     },
-    createNote: {
-        width:60,
-        height: 60,
-        position: "absolute",
-        bottom: 50,
-        right: 10,
-    },
-    button:{
-        height: 60,
-        width: 60,
-        borderRadius: 50,
-        backgroundColor: 'tomato',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'white',
-        fontSize: 20
-    }
+    
 })
